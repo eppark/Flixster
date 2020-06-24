@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flixster">
 
-    # Declare that the app uses the Internet
+    <!-- Declare that the app uses the Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
