@@ -80,41 +80,44 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Set the release date
         tvReleaseDate.setText(String.format("Release date: %s", movie.getReleaseDate()));
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        // MovieDB returns a Json
-        client.get(movie.getYtVideoUrl(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d("Movie", "onSuccess");
+        // If we haven't already fetched a YT link result before
+        if (movie.ytKey == null) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            // MovieDB returns a Json
+            client.get(movie.getYtVideoUrl(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d("Movie", "onSuccess");
 
-                JSONObject jsonObject = json.jsonObject;
-                try {
-                    // Fetch results and turn them into Movies
-                    JSONArray results = jsonObject.getJSONArray("results");
-                    if (results.length() > 0) // if we have a video
-                    {
-                        for (int i = 0; i < results.length(); i++) {
-                            JSONObject details = results.getJSONObject(i);
-                            // Ensure we get a YT video
-                            if (details.getString("site").equals("YouTube")) {
-                                movie.ytKey = details.getString("key");
-                                break;
+                    JSONObject jsonObject = json.jsonObject;
+                    try {
+                        // Fetch results and turn them into Movies
+                        JSONArray results = jsonObject.getJSONArray("results");
+                        if (results.length() > 0) // if we have a video
+                        {
+                            for (int i = 0; i < results.length(); i++) {
+                                JSONObject details = results.getJSONObject(i);
+                                // Ensure we get a YT video
+                                if (details.getString("site").equals("YouTube")) {
+                                    movie.ytKey = details.getString("key");
+                                    break;
+                                }
                             }
+                            Log.d("Movie", "Successfully grabbed video " + movie.ytKey + " for " + movie.getId());
+                        } else {
+                            movie.ytKey = null;
                         }
-                        Log.d("Movie", "Successfully grabbed video " + movie.ytKey + " for " + movie.getId());
-                    } else {
-                        movie.ytKey = null;
+                    } catch (JSONException e) {
+                        Log.e("Movie", "Hit json exception", e);
                     }
-                } catch (JSONException e) {
-                    Log.e("Movie", "Hit json exception", e);
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d("Movie", "onFailure");
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.d("Movie", "onFailure");
+                }
+            });
+        }
 
         ibPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
