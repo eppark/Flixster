@@ -28,6 +28,7 @@ The following **additional** features are implemented:
 * [x] Custom heart rating bar to show popularity
 * [x] Soft-coded links and stored YouTube keys so as to not waste time/resources to fetch again
 * [x] Overlaid YouTube play button that changes when pressed
+* [x] Splash screen added; however, we don't usually have many movies concurrently playing in theaters so this usually will not show up
 
 ## Video Walkthrough
 
