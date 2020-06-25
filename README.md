@@ -36,7 +36,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Initial app kept crashing; the error given was "Expected Android API level 21+, but was 30". Changing the Android API level to 29 and the miniSDK level to 21 fixed this issue; perhaps the functionalities used lacked compatibility with API level 30.
 
 ## Open-source libraries used
 
