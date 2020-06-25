@@ -1,22 +1,14 @@
 package com.example.flixster.models;
 
-import android.util.Log;
-
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.MainActivity;
-import com.example.flixster.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Headers;
 
 // Encapsulate a movie
 @Parcel // annotation indicates class is Parcelable
