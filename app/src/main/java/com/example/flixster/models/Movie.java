@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flixster.MainActivity;
 import com.example.flixster.R;
 
 import org.json.JSONArray;
@@ -71,11 +72,11 @@ public class Movie {
     }
 
     public String getPosterPath() {
-        return String.format("https://image.tmdb.org/t/p/w342/%s", posterPath);
+        return String.format("https://image.tmdb.org/t/p/%s/%s", MainActivity.POSTER_SIZE, posterPath);
     }
 
     public String getBackdropPath() {
-        return String.format("https://image.tmdb.org/t/p/w780/%s", backdropPath);
+        return String.format("https://image.tmdb.org/t/p/%s/%s", MainActivity.BACKDROP_SIZE, backdropPath);
     }
 
     public Double getVoteAverage() {

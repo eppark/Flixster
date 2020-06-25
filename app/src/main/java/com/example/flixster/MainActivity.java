@@ -24,7 +24,10 @@ import okhttp3.Headers;
 public class MainActivity extends AppCompatActivity {
 
     public final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=";
+    public final String CONFIG_URL = "https://api.themoviedb.org/3/configuration?api_key=";
     public static final String TAG = "MainActivity"; // easily log data
+    public static String POSTER_SIZE = "original";
+    public static String BACKDROP_SIZE = "original";
 
     List<Movie> movies;
 
@@ -45,6 +48,32 @@ public class MainActivity extends AppCompatActivity {
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
         AsyncHttpClient client = new AsyncHttpClient();
+        // Find the image sizes
+        client.get(CONFIG_URL + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "Config onSuccess");
+
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    // Fetch results
+                    JSONArray images = jsonObject.getJSONArray("images");
+                    Log.i(TAG, "Images: " + images.toString());
+                    POSTER_SIZE = jsonObject.getJSONArray("poster_sizes").getJSONObject(3).toString();
+                    BACKDROP_SIZE = jsonObject.getJSONArray("backdrop_sizes").getJSONObject(2).toString();
+
+                    Log.i(TAG, "Images: " + POSTER_SIZE + " and " + BACKDROP_SIZE);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Hit json exception", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d(TAG, "onFailure");
+            }
+        });
+
         // MovieDB returns a Json
         client.get(NOW_PLAYING_URL + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
             @Override

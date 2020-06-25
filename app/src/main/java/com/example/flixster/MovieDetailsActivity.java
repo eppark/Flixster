@@ -57,7 +57,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s'", movie.getTitle()));
 
         // Set the image
-        Glide.with(this).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(40, 0)).into(ivBackdropImage);
+        Glide.with(this).load(movie.getBackdropPath())
+                .placeholder(R.drawable.flicks_backdrop_placeholder)
+                .transform(new RoundedCornersTransformation(40, 0)).into(ivBackdropImage);
 
         // Set the title and overview
         tvTitle.setText(movie.getTitle());
