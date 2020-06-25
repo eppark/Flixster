@@ -2,7 +2,9 @@ package com.example.flixster;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import com.example.flixster.databinding.ActivityMovieTrailerBinding;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -13,7 +15,13 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_trailer);
+
+        // Set ViewBinding
+        final ActivityMovieTrailerBinding binding = ActivityMovieTrailerBinding.inflate(getLayoutInflater());
+
+        // layout of activity is stored in a special property called root
+        View view = binding.getRoot();
+        setContentView(view);
 
         // temporary test video id
         final String videoId = getIntent().getExtras().getString(MovieDetailsActivity.KEY_MOVIE_VID);

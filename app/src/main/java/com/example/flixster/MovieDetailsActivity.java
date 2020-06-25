@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flixster.databinding.ActivityMovieDetailsBinding;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -33,28 +34,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     Movie movie;
 
-    // View objects
-    ImageView ivBackdropImage;
-    TextView tvTitle;
-    TextView tvOverview;
-    RatingBar rbVoteAverage;
-    TextView tvReleaseDate;
-    RatingBar rbPopularity;
-    ImageButton ibPlayBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
 
-        // Resolve the view objects
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvOverview = (TextView) findViewById(R.id.tvOverview);
-        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
-        ivBackdropImage = (ImageView) findViewById(R.id.ivBackdropImage);
-        tvReleaseDate = (TextView) findViewById(R.id.tvReleaseDate);
-        rbPopularity = (RatingBar) findViewById(R.id.rbPopularity);
-        ibPlayBtn = (ImageButton) findViewById(R.id.ibPlayBtn);
+        // Set ViewBinding
+        final ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+
+        // layout of activity is stored in a special property called root
+        View view = binding.getRoot();
+        setContentView(view);
 
         // Unwrap the movie passed in via intent, using its simple name as a key
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
@@ -63,22 +52,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Set the image
         Glide.with(this).load(movie.getBackdropPath())
                 .placeholder(R.drawable.flicks_backdrop_placeholder)
-                .transform(new RoundedCornersTransformation(40, 0)).into(ivBackdropImage);
+                .transform(new RoundedCornersTransformation(40, 0)).into(binding.ivBackdropImage);
 
         // Set the title and overview
-        tvTitle.setText(movie.getTitle());
-        tvOverview.setText(movie.getOverview());
+        binding.tvTitle.setText(movie.getTitle());
+        binding.tvOverview.setText(movie.getOverview());
 
         // Popularity is from 1 to 100, so divide by 20
         float popularity = movie.getPopularity().floatValue();
-        rbPopularity.setRating(popularity = popularity > 0 ? popularity / 20.0f : popularity);
+        binding.rbPopularity.setRating(popularity = popularity > 0 ? popularity / 20.0f : popularity);
 
         // Vote average is from 1 to 10, so divide by 2
         float voteAverage = movie.getVoteAverage().floatValue();
-        rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+        binding.rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
 
         // Set the release date
-        tvReleaseDate.setText(String.format("Release date: %s", movie.getReleaseDate()));
+        binding.tvReleaseDate.setText(String.format("Release date: %s", movie.getReleaseDate()));
 
         // If we haven't already fetched a YT link result before
         if (movie.ytKey == null) {
@@ -119,11 +108,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
             });
         }
 
-        ibPlayBtn.setOnClickListener(new View.OnClickListener() {
+        binding.ibPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Change the button when we press it
-                ibPlayBtn.setImageResource(R.drawable.ic_ytplay_pressed);
+                binding.ibPlayBtn.setImageResource(R.drawable.ic_ytplay_pressed);
 
                 // If we do have a video we can use
                 if (movie.ytKey != null) {
@@ -144,7 +133,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ibPlayBtn.setImageResource(R.drawable.ic_ytplay_unpressed);
+                        binding.ibPlayBtn.setImageResource(R.drawable.ic_ytplay_unpressed);
                     }
                 }, 1000);
             }
