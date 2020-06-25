@@ -16,7 +16,8 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_movie_trailer);
 
         // temporary test video id
-        final String videoId = MovieDetailsActivity.KEY_MOVIE_VID;
+        final String videoId = getIntent().getExtras().getString(MovieDetailsActivity.KEY_MOVIE_VID);
+        Log.d("MovieTrailer", "This is: " + videoId);
 
         // resolve the player view from the layout
         YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.player);
@@ -29,7 +30,6 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                 Log.e("MovieTrailerActivity", "Success initializing Youtube player");
                 // do any work here to cue video, play video, etc.
                 youTubePlayer.cueVideo(videoId);
-                youTubePlayer.play();
             }
 
             @Override

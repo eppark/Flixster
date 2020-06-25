@@ -89,10 +89,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     JSONArray results = jsonObject.getJSONArray("results");
                     if (results.length() > 0) // if we have a video
                     {
-                        movie.ytId = results.getJSONObject(0).getString("id");
-                        Log.d("Movie", "Successfully grabbed video " + movie.ytId + " for " + movie.getId());
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject details = results.getJSONObject(i);
+                            // Ensure we get a YT video
+                            if (details.getString("site").equals("YouTube")) {
+                                movie.ytKey = details.getString("key");
+                                break;
+                            }
+                        }
+                        Log.d("Movie", "Successfully grabbed video " + movie.ytKey + " for " + movie.getId());
                     } else {
-                        movie.ytId = null;
+                        movie.ytKey = null;
                     }
                 } catch (JSONException e) {
                     Log.e("Movie", "Hit json exception", e);
@@ -109,11 +116,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // If we do have a video we can use
-                if (movie.ytId != null) {
+                if (movie.ytKey != null) {
                     Log.d("MovieDetailActivity", "Success onClickListener");
                     // Create an intent
                     Intent intent = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
-                    intent.putExtra(KEY_MOVIE_VID, movie.ytId);
+                    intent.putExtra(KEY_MOVIE_VID, movie.ytKey);
 
                     // Display the movie trailer activity
                     startActivityForResult(intent, TRAILER_TEXT_CODE);

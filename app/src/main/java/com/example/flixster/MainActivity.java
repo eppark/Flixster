@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     // Fetch results
-                    JSONArray images = jsonObject.getJSONArray("images");
+                    JSONObject images = jsonObject.getJSONObject("images");
                     Log.i(TAG, "Images: " + images.toString());
-                    POSTER_SIZE = jsonObject.getJSONArray("poster_sizes").getJSONObject(3).toString();
-                    BACKDROP_SIZE = jsonObject.getJSONArray("backdrop_sizes").getJSONObject(2).toString();
+                    POSTER_SIZE = images.getJSONArray("poster_sizes").getString(3);
+                    BACKDROP_SIZE = images.getJSONArray("backdrop_sizes").getString(2);
 
                     Log.i(TAG, "Images: " + POSTER_SIZE + " and " + BACKDROP_SIZE);
                 } catch (JSONException e) {

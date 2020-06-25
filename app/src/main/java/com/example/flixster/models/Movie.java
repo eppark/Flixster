@@ -24,7 +24,7 @@ public class Movie {
     String releaseDate;
     Integer id;
     String ytVideoUrl;
-    public String ytId;
+    public String ytKey;
 
     // no-arg, empty constructor required for Parceler
     public Movie() {
@@ -39,6 +39,7 @@ public class Movie {
         popularity = jsonObject.getDouble("popularity");
         releaseDate = jsonObject.getString("release_date");
         id = jsonObject.getInt("id");
+        ytKey = null;
         ytVideoUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s", id, api_key);
     }
 
