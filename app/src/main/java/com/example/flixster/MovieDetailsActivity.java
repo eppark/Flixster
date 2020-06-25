@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     RatingBar rbVoteAverage;
     TextView tvReleaseDate;
     RatingBar rbPopularity;
+    ImageButton ibPlayBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         ivBackdropImage = (ImageView) findViewById(R.id.ivBackdropImage);
         tvReleaseDate = (TextView) findViewById(R.id.tvReleaseDate);
         rbPopularity = (RatingBar) findViewById(R.id.rbPopularity);
+        ibPlayBtn = (ImageButton) findViewById(R.id.ibPlayBtn);
 
         // Unwrap the movie passed in via intent, using its simple name as a key
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
@@ -112,9 +116,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ivBackdropImage.setOnClickListener(new View.OnClickListener() {
+        ibPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Change the button when we press it
+                ibPlayBtn.setImageResource(R.drawable.ic_ytplay_pressed);
+
                 // If we do have a video we can use
                 if (movie.ytKey != null) {
                     Log.d("MovieDetailActivity", "Success onClickListener");
@@ -128,8 +135,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     // Let the user know there are no related videos to the movie
                     Toast.makeText(getApplicationContext(), "No videos available for this movie", Toast.LENGTH_SHORT).show();
                 }
+
+                // Set a delay so that after we press the button, we see the original again
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ibPlayBtn.setImageResource(R.drawable.ic_ytplay_unpressed);
+                    }
+                }, 1000);
             }
         });
     }
-
 }

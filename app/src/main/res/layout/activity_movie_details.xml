@@ -90,4 +90,17 @@
         android:progressTint="#F44336"
         android:stepSize="0.5" />
 
+    <ImageButton
+        android:id="@+id/ibPlayBtn"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="85dp"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:elevation="10dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_ytplay_unpressed" />
+
 </RelativeLayout>
