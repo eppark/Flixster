@@ -1,22 +1,33 @@
 package com.example.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.models.Movie;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 public class MovieDetailsActivity extends AppCompatActivity {
+
+    public static final String KEY_MOVIE_VID = "movie_vid_url";
+    public static final int TRAILER_TEXT_CODE = 20;
 
     Movie movie;
 
@@ -56,5 +67,51 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         // Set the release date
         tvReleaseDate.setText(String.format("Release date: %s", movie.getReleaseDate()));
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        // MovieDB returns a Json
+        client.get(movie.getYtVideoUrl(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d("Movie", "onSuccess");
+
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    // Fetch results and turn them into Movies
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    if (results.length() > 0) // if we have a video
+                    {
+                        movie.ytId = results.getJSONObject(0).getString("id");
+                        Log.d("Movie", "Successfully grabbed video " + movie.ytId + " for " + movie.getId());
+                    } else {
+                        movie.ytId = null;
+                    }
+                } catch (JSONException e) {
+                    Log.e("Movie", "Hit json exception", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d("Movie", "onFailure");
+            }
+        });
+
+        ivBackdropImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // If we do have a video we can use
+                if (movie.ytId != null) {
+                    Log.d("MovieDetailActivity", "Success onClickListener");
+                    // Create an intent
+                    Intent intent = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+                    intent.putExtra(KEY_MOVIE_VID, movie.ytId);
+
+                    // Display the movie trailer activity
+                    startActivityForResult(intent, TRAILER_TEXT_CODE);
+                }
+            }
+        });
     }
+
 }

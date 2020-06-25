@@ -8,11 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -86,17 +84,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvOverview.setText(movie.getOverview());
             // Change image URL depending on portrait (poster image) or landscape (backdrop image)
             String imageUrl;
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            {
+            Integer placeholderImage;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imageUrl = movie.getBackdropPath();
-            }
-            else
-            {
+                placeholderImage = R.drawable.flicks_movie_placeholder;
+            } else {
                 imageUrl = movie.getPosterPath();
+                placeholderImage = R.drawable.flicks_backdrop_placeholder;
             }
 
             // Rounded corners
-            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(40, 0)).into(ivPoster);
+            Glide.with(context).load(imageUrl)
+                    .placeholder(placeholderImage)
+                    .transform(new RoundedCornersTransformation(40, 0)).into(ivPoster);
         }
 
         // When the user clicks on a row, show MovieDetailsActivity for the selected movie
@@ -105,8 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             int position = getAdapterPosition(); // Gets the item position
 
             // Make sure the position is valid
-            if (position != RecyclerView.NO_POSITION)
-            {
+            if (position != RecyclerView.NO_POSITION) {
                 Movie movie = movies.get(position);
 
                 // Create an intent for the new activity
