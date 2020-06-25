@@ -37,6 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvOverview;
     RatingBar rbVoteAverage;
     TextView tvReleaseDate;
+    RatingBar rbPopularity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
         ivBackdropImage = (ImageView) findViewById(R.id.ivBackdropImage);
         tvReleaseDate = (TextView) findViewById(R.id.tvReleaseDate);
+        rbPopularity = (RatingBar) findViewById(R.id.rbPopularity);
 
         // Unwrap the movie passed in via intent, using its simple name as a key
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
@@ -60,6 +62,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Set the title and overview
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
+
+        // Popularity is from 1 to 100, so divide by 20
+        float popularity = movie.getPopularity().floatValue();
+        rbPopularity.setRating(popularity = popularity > 0 ? popularity / 20.0f : popularity);
 
         // Vote average is from 1 to 10, so divide by 2
         float voteAverage = movie.getVoteAverage().floatValue();

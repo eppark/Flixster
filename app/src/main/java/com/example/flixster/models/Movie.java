@@ -27,6 +27,7 @@ public class Movie {
     String title;
     String overview;
     Double voteAverage;
+    Double popularity;
     String releaseDate;
     Integer id;
     String ytVideoUrl;
@@ -42,6 +43,7 @@ public class Movie {
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
         voteAverage = jsonObject.getDouble("vote_average");
+        popularity = jsonObject.getDouble("popularity");
         releaseDate = jsonObject.getString("release_date");
         id = jsonObject.getInt("id");
         ytVideoUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s", id, "538d34da62949e40e163c04fdc23906f");
@@ -58,6 +60,10 @@ public class Movie {
 
     public Integer getId() {
         return id;
+    }
+
+    public Double getPopularity() {
+        return popularity;
     }
 
     public String getYtVideoUrl() {

@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomRatingBarStyle" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/custom_heart_rating</item>
+        <item name="android:minHeight">5dip</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+
 </resources>
