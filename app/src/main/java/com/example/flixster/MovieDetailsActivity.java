@@ -1,7 +1,6 @@
 package com.example.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -117,6 +117,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
                     // Display the movie trailer activity
                     startActivityForResult(intent, TRAILER_TEXT_CODE);
+                } else {
+                    // Let the user know there are no related videos to the movie
+                    Toast.makeText(getApplicationContext(), "No videos available for this movie", Toast.LENGTH_SHORT).show();
                 }
             }
         });

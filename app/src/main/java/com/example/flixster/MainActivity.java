@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     // Fetch results and turn them into Movies
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
-                    movies.addAll(Movie.fromJSONArray(results));
+                    movies.addAll(Movie.fromJSONArray(getString(R.string.mvdb_api_key), results));
 
                     // Let the adapter know to rerender the recycler view
                     movieAdapter.notifyDataSetChanged();

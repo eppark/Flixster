@@ -38,7 +38,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(JSONObject jsonObject) throws JSONException {
+    public Movie(String api_key, JSONObject jsonObject) throws JSONException {
         backdropPath = jsonObject.getString("backdrop_path");
         posterPath = jsonObject.getString("poster_path");
         title = jsonObject.getString("title");
@@ -47,14 +47,14 @@ public class Movie {
         popularity = jsonObject.getDouble("popularity");
         releaseDate = jsonObject.getString("release_date");
         id = jsonObject.getInt("id");
-        ytVideoUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s", id, "538d34da62949e40e163c04fdc23906f");
+        ytVideoUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s", id, api_key);
     }
 
     // Iterate through the JSON array and construct a movie for each one in the array
-    public static List<Movie> fromJSONArray(JSONArray movieJsonArray) throws JSONException {
+    public static List<Movie> fromJSONArray(String api_key, JSONArray movieJsonArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < movieJsonArray.length(); i++) {
-            movies.add(new Movie(movieJsonArray.getJSONObject(i)));
+            movies.add(new Movie(api_key, movieJsonArray.getJSONObject(i)));
         }
         return movies;
     }
