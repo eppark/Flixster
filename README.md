@@ -53,6 +53,10 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 Initial app kept crashing; the error given was "Expected Android API level 21+, but was 30". Changing the Android API level to 29 and the miniSDK level to 21 fixed this issue; perhaps the functionalities used lacked compatibility with API level 30.
 
+I wanted the play button to change to a different shape when clicked, and return to normal when the user exited the video player. However, the play button would change back so quickly that it looked like it didn't even change. Workaround: Adding a timer so that the image doesn't change immediately, but will change when the user sees the video player screen as to give the impression it changed correctly.
+
+Spent a lot of time on the watchlist. Debated how to save the watchlist movies to a file: should I save the movie info directly? However, it was difficult to read all of this information from a file. Thus, I decided to just save the movie IDs from the DB and load them in from the database whenever the app starts; this leads to slightly longer loading times but nothing drastic. Also had to use a Set instead of a List because long-pressing sometimes responded in duplicates.
+
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
