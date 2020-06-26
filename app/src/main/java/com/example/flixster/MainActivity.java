@@ -29,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity"; // easily log data
     public static String POSTER_SIZE = "original";
     public static String BACKDROP_SIZE = "original";
+    public static String BASE_URL = "https://image.tmdb.org/t/p/";
 
     List<Movie> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme); // Get rid of the splash loading screen
         super.onCreate(savedInstanceState);
 
         // Set ViewBinding
@@ -55,17 +57,15 @@ public class MainActivity extends AppCompatActivity {
         binding.rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
         AsyncHttpClient client = new AsyncHttpClient();
-        // Find the image sizes
+        // Find the image sizes and image URL from the MovieDB configuration file
         client.get(CONFIG_URL + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG, "Config onSuccess");
-
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     // Fetch results
                     JSONObject images = jsonObject.getJSONObject("images");
-                    Log.i(TAG, "Images: " + images.toString());
+                    BASE_URL = images.getString("secure_base_url");
                     POSTER_SIZE = images.getJSONArray("poster_sizes").getString(3);
                     BACKDROP_SIZE = images.getJSONArray("backdrop_sizes").getString(2);
 
@@ -82,16 +82,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // MovieDB returns a Json
+        // Get all of the now playing movies
         client.get(NOW_PLAYING_URL + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG, "onSuccess");
-
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     // Fetch results and turn them into Movies
                     JSONArray results = jsonObject.getJSONArray("results");
-                    Log.i(TAG, "Results: " + results.toString());
                     movies.addAll(Movie.fromJSONArray(getString(R.string.mvdb_api_key), results));
 
                     // Let the adapter know to rerender the recycler view

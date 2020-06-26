@@ -64,12 +64,14 @@ public class Movie {
         return ytVideoUrl;
     }
 
+    // Return a URL to the movie poster path
     public String getPosterPath() {
-        return String.format("https://image.tmdb.org/t/p/%s/%s", MainActivity.POSTER_SIZE, posterPath);
+        return String.format("%s%s/%s", MainActivity.BASE_URL, MainActivity.POSTER_SIZE, posterPath);
     }
 
+    // Return a URL to the movie backdrop path
     public String getBackdropPath() {
-        return String.format("https://image.tmdb.org/t/p/%s/%s", MainActivity.BACKDROP_SIZE, backdropPath);
+        return String.format("%s%s/%s", MainActivity.BASE_URL, MainActivity.BACKDROP_SIZE, backdropPath);
     }
 
     public Double getVoteAverage() {

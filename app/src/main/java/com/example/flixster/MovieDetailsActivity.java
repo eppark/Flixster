@@ -76,11 +76,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             client.get(movie.getYtVideoUrl(), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.d("Movie", "onSuccess");
-
                     JSONObject jsonObject = json.jsonObject;
                     try {
-                        // Fetch results and turn them into Movies
+                        // Fetch results and find the first valid YT video
                         JSONArray results = jsonObject.getJSONArray("results");
                         if (results.length() > 0) // if we have a video
                         {
@@ -116,7 +114,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
                 // If we do have a video we can use
                 if (movie.ytKey != null) {
-                    Log.d("MovieDetailActivity", "Success onClickListener");
                     // Create an intent
                     Intent intent = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
                     intent.putExtra(KEY_MOVIE_VID, movie.ytKey);
