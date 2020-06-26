@@ -15,26 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.MainActivity;
 import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
 import com.example.flixster.WatchedActivity;
 import com.example.flixster.models.Movie;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-import okhttp3.Headers;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
