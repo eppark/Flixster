@@ -24,9 +24,12 @@ import org.parceler.Parcels;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int WATCHED_TEXT_CODE = 20;
 
     List<Movie> movies;
-    List<Integer> watchlist;
+    Set<Integer> watchlist;
     List<Movie> watchedMovies;
 
     @Override
@@ -70,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public Set<Integer> getWatchlist() {
+        return watchlist;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme); // Get rid of the splash loading screen
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         movies = new ArrayList<>();
-        watchlist = new ArrayList<>();
+        watchlist = new HashSet<>();
         watchedMovies = new ArrayList<>();
         loadWatched(); // Load watched movies if we have them
 
@@ -150,41 +157,54 @@ public class MainActivity extends AppCompatActivity {
 
     // Add a movie to the watched list
     public void addWatchedMovie(Integer id) {
-        watchlist.add(id);
-        AsyncHttpClient client = new AsyncHttpClient();
-        // MovieDB returns a Json
-        // Get details of the current movie
-        client.get(MainActivity.MOVIE_URL + id + "?api_key=" + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                JSONObject result = json.jsonObject;
-                try {
-                    // Fetch result and turn into Movie
-                    watchedMovies.add(new Movie(getString(R.string.mvdb_api_key), result));
-
-                    // Let the adapter know to rerender the recycler view
-                    if (WatchedActivity.watchedAdapter != null) {
-                        WatchedActivity.watchedAdapter.notifyDataSetChanged();
+        if (!watchlist.contains(id)) {
+            watchlist.add(id);
+            AsyncHttpClient client = new AsyncHttpClient();
+            // MovieDB returns a Json
+            // Get details of the current movie
+            client.get(MainActivity.MOVIE_URL + id + "?api_key=" + getString(R.string.mvdb_api_key), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    JSONObject result = json.jsonObject;
+                    try {
+                        // Fetch result and turn into Movie
+                        Movie temp = new Movie(getString(R.string.mvdb_api_key), result);
+                        temp.setWatched();
+                        watchedMovies.add(temp);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Hit json exception", e);
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Hit json exception", e);
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d(TAG, "onFailure");
-            }
-        });
-        saveWatched();
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.d(TAG, "onFailure");
+                }
+            });
+            saveWatched();
+            Log.d("add", "wc" + watchlist);
+            Log.d("add", "id " + id);
+        }
     }
 
     // Remove a movie from the watched list
     public void removeWatchedActivity(Integer id) {
-        int position = watchlist.indexOf(id);
+        int position = getIndex(watchlist, id);
+        Log.d("del", "wc" + watchlist);
+        Log.d("del", "pos" + position + "id "+ id);
         watchlist.remove(id);
         watchedMovies.remove(position);
         saveWatched();
+    }
+
+    // Get index from a Set
+    private int getIndex(Set<Integer> set, Integer value) {
+        int result = 0;
+        for (Integer entry:set) {
+            if (entry.equals(value)) return result;
+            result++;
+        }
+        return -1;
     }
 
     private File getDataFile() {
@@ -208,11 +228,14 @@ public class MainActivity extends AppCompatActivity {
     // This function will load items by reading every line of the data file
     private void loadWatched() {
         try {
-            watchlist = getIntegerArray(new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset())));
+            ArrayList<Integer> temp = getIntegerArray(new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset())));
+            for (Integer id : temp) {
+                addWatchedMovie(id);
+            }
             Log.e("MainActivity", "Successfully read items");
         } catch (IOException e) {
             Log.e("MainActivity", "Error reading items", e);
-            watchlist = new ArrayList<>();
+            watchlist = new HashSet<>();
         }
     }
 

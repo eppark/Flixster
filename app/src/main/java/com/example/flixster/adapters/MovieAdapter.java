@@ -3,6 +3,7 @@ package com.example.flixster.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,14 +137,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 movie.setWatched();
 
                 if (context instanceof MainActivity) {
-                    // Change image watched
-                    if (movie.watched) {
-                        ((MainActivity)context).addWatchedMovie(movie.getId());
-                        Toast.makeText(context, "Added movie to watchlist", Toast.LENGTH_SHORT).show();
-                    } else {
+                    // Change watched setting
+                    if (((MainActivity)context).getWatchlist().contains(movie.getId()) || !movie.watched) {
                         // Let the adapter know
                         ((MainActivity)context).removeWatchedActivity(movie.getId());
                         Toast.makeText(context, "Removed movie from watchlist", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((MainActivity)context).addWatchedMovie(movie.getId());
+                        Toast.makeText(context, "Added movie to watchlist", Toast.LENGTH_SHORT).show();
                     }
                     // Save
                     if (WatchedActivity.watchedAdapter != null) {
@@ -151,6 +152,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     }
                 }
             }
+            // Set a delay so we don't add a million of them
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                }
+            }, 1000);
             return true;
         }
     }
