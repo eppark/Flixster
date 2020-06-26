@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Inernet
+    // Internet
     implementation 'com.codepath.libraries:asynchttpclient:0.0.9'
 
     // Images
@@ -52,4 +52,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
     // If you want to use the GPU Filters
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.4'
+
+    // File
+    implementation 'commons-io:commons-io:2.6'
 }

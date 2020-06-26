@@ -25,6 +25,7 @@ public class Movie {
     Integer id;
     String ytVideoUrl;
     public String ytKey;
+    public Boolean watched;
 
     // no-arg, empty constructor required for Parceler
     public Movie() {
@@ -39,6 +40,7 @@ public class Movie {
         popularity = jsonObject.getDouble("popularity");
         releaseDate = jsonObject.getString("release_date");
         id = jsonObject.getInt("id");
+        watched = false;
         ytKey = null;
         ytVideoUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s", id, api_key);
     }
@@ -62,6 +64,10 @@ public class Movie {
 
     public String getYtVideoUrl() {
         return ytVideoUrl;
+    }
+
+    public void setWatched() {
+        watched = !watched;
     }
 
     // Return a URL to the movie poster path

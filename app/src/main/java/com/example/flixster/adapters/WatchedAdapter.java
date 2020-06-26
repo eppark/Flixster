@@ -9,43 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.flixster.MainActivity;
 import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
-import com.example.flixster.WatchedActivity;
 import com.example.flixster.models.Movie;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-import okhttp3.Headers;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class WatchedAdapter extends RecyclerView.Adapter<WatchedAdapter.ViewHolder> {
 
     Context context;
     List<Movie> movies;
-    public File dir;
 
-    public MovieAdapter(Context context, List<Movie> movies, File dir) {
+    public WatchedAdapter(Context context, List<Movie> movies) {
         this.context = context;
         this.movies = movies;
-        this.dir = dir;
     }
 
     // Inflate a layout (item_movie) from XML and return the holder
@@ -76,7 +62,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     // Class cannot be static
     // Implements the View.OnClickListener
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle;
         TextView tvOverview;
@@ -91,7 +77,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
             // OnClickListener
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
         }
 
         public void bind(Movie movie) {
@@ -130,36 +115,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 // Show the activity
                 context.startActivity(intent);
             }
-        }
-
-        // When the user long-clicks on a row, add the movie to the watched list
-        @Override
-        public boolean onLongClick(View v) {
-            int position = getAdapterPosition(); // Gets the item position
-
-            // Make sure the position is valid
-            if (position != RecyclerView.NO_POSITION) {
-                Movie movie = movies.get(position);
-
-                movie.setWatched();
-
-                if (context instanceof MainActivity) {
-                    // Change image watched
-                    if (movie.watched) {
-                        ((MainActivity)context).addWatchedMovie(movie.getId());
-                        Toast.makeText(context, "Added movie to watched list", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Let the adapter know
-                        ((MainActivity)context).removeWatchedActivity(movie.getId());
-                        Toast.makeText(context, "Removed movie from watched list", Toast.LENGTH_SHORT).show();
-                    }
-                    // Save
-                    if (WatchedActivity.watchedAdapter != null) {
-                        WatchedActivity.watchedAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-            return true;
         }
     }
 }
