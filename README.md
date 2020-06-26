@@ -29,19 +29,22 @@ The following **additional** features are implemented:
 * [x] Soft-coded links and stored YouTube keys so as to not waste time/resources to fetch again
 * [x] Overlaid YouTube play button that changes when pressed
 * [x] Splash screen added; however, we don't usually have many movies concurrently playing in theaters so this usually will not show up
-* [x] Created a watchlist that users can add and remove from. Long-press a movie to add it to the watchlist, and press the upper-right icon to see the watchlist.
+* [x] Created a watchlist that users can add and remove from. Long-press a movie to add it to the watchlist, and press the upper-right icon to see the watchlist. Maintains persistence to allow the app to keep the watchlist data.
 
 ## Video Walkthrough
 
 Here's some walkthroughs of implemented user stories.
 
 Portrait mode:
+
 ![App Demo Portrait Link](screenshots/walkthroughportrait.gif)
 
 Landscape mode:
+
 ![App Demo Landscape Link](screenshots/walkthroughlandscape.gif)
 
 ***NEW!*** Save movies to a watchlist by long-pressing to add and remove. Maintains persistence; closing the app and reopening it still keeps the data.
+
 ![App Demo Watchlist Link](screenshots/walkthroughwatchlist.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
