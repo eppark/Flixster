@@ -147,11 +147,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     // Change image watched
                     if (movie.watched) {
                         ((MainActivity)context).addWatchedMovie(movie.getId());
-                        Toast.makeText(context, "Added movie to watched list", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Added movie to watchlist", Toast.LENGTH_SHORT).show();
                     } else {
                         // Let the adapter know
                         ((MainActivity)context).removeWatchedActivity(movie.getId());
-                        Toast.makeText(context, "Removed movie from watched list", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Removed movie from watchlist", Toast.LENGTH_SHORT).show();
                     }
                     // Save
                     if (WatchedActivity.watchedAdapter != null) {
