@@ -33,9 +33,16 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
+Here's some walkthroughs of implemented user stories.
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+Portrait mode:
+![App Demo Portrait Link](screenshots/walkthroughportrait.gif)
+
+Landscape mode:
+![App Demo Landscape Link](screenshots/walkthroughlandscape.gif)
+
+***NEW!*** Save movies to a watchlist by long-pressing to add and remove. Maintains persistence; closing the app and reopening it still keeps the data.
+![App Demo Watchlist Link](screenshots/walkthroughwatchlist.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
